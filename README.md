@@ -13,8 +13,8 @@ A lightweight CRM-style web application designed for solo business owners to man
 
 ## Tech Stack
 
-- **Frontend**: React.js
-- **Backend**: Node.js, Express.js
+- **Frontend**: React.js , Typescript
+- **Backend**: Node.js, Express.js , Typescript
 - **Database**: MongoDB, Mongoose
 - **Authentication**: JWT, bcrypt
 - **Others**: Axios, dotenv, CORS
