@@ -30,19 +30,22 @@ A lightweight CRM-style web application designed for solo business owners to man
 ### Backend Setup
 
 ```bash
-cd server
+cd ./api
 npm install
-cp .env.example .env
-# Add your Mongo URI and JWT secret to .env
-npm run dev
-
-Frontend Setup
-cd client
-npm install
-npm run dev
 
 Sample .env file
 # server/.env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/crm-app
-JWT_SECRET=your_jwt_secret_key
+JWT_ACCESS_SECRET=your_jwt_secret_key
+JWT_REFRESH_SECRET=your_jwt_secret_key
+PORT=3004
+MONGODB_URI=mongo-URI(cloud/local)
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=60m
+CORS_ALLOWED_ORIGIN=http://localhost:5173
+NODE_ENV=development
+```
+### Frontend Setup
+```bash
+cd client
+npm install
+npm run dev
