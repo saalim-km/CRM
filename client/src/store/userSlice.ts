@@ -18,21 +18,21 @@ const clientSlice = createSlice({
     name : "user",
     initialState : initialState,
     reducers : {
-        login : (state , action) => {
+        userLogin : (state , action) => {
             state.user = action.payload
         },
-        logout : (state,action)=> {
+        userLogout : (state,action)=> {
             state.user = null;
             localStorage.removeItem('userSession')
         }
     }
 })
 
-const {login,logout} = clientSlice.actions;
+const {userLogin,userLogout} = clientSlice.actions;
 
 export {
-    login,
-    logout
+    userLogin,
+    userLogout
 }
 
 export default clientSlice.reducer;

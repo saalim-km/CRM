@@ -1,4 +1,4 @@
-import type { NoAuthRouteProps } from "../types/protectedRoute";
+import type { NoAuthRouteProps } from "../types/protectedRoute.types";
 import { useSelector } from "react-redux";
 import type { Rootstate } from "../store/store";
 import { Navigate } from "react-router-dom";

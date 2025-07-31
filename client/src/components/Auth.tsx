@@ -1,31 +1,62 @@
-"use client"
+"use client";
 
-import React, { useEffect } from "react"
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { authSchema } from "@/utils/formik/schemas"
-import { toast } from "sonner"
-
+import React, { useEffect } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { authSchema } from "@/utils/formik/schemas";
+import { useLogin, useSignup } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { handleError } from "@/utils/error/error-handler.utils";
+import { userLogin } from "@/store/userSlice";
 
 export function AuthPage() {
-  const [isLogin, setIsLogin] = React.useState(true)
+  const [isLogin, setIsLogin] = React.useState(true);
+  const { mutate: signup } = useSignup();
+  const { mutate: login } = useLogin();
 
   const initialValues = {
     email: "",
     password: "",
     confirmPassword: "",
     fullName: "",
-  }
+  };
 
-  useEffect(()=> {
-    toast.success('configured')
-  },[])
   const handleSubmit = (values: typeof initialValues) => {
-    console.log(values);
-  }
+    if (isLogin) {
+      login(values,{
+        onSuccess:(data)=> {
+          toast.success(data.message);
+          userLogin(data.user)
+        },
+        onError : (err)=> {
+          handleError(err)
+        }
+      })
+    } else {
+      signup({
+        name: values.fullName,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      },{
+        onSuccess : (data)=> {
+          toast.success(data.message)
+        },
+        onError: (err)=> {
+          handleError(err)
+        }
+      })
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
@@ -35,7 +66,9 @@ export function AuthPage() {
             {isLogin ? "Login" : "Register"}
           </CardTitle>
           <CardDescription>
-            {isLogin ? "Sign in to your CRM account" : "Create a new CRM account"}
+            {isLogin
+              ? "Sign in to your CRM account"
+              : "Create a new CRM account"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -109,7 +142,11 @@ export function AuthPage() {
                     />
                   </div>
                 )}
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
                   {isLogin ? "Sign In" : "Sign Up"}
                 </Button>
               </Form>
@@ -121,11 +158,13 @@ export function AuthPage() {
               onClick={() => setIsLogin(!isLogin)}
               className="text-sm text-slate-600"
             >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              {isLogin
+                ? "Don't have an account? Sign up"
+                : "Already have an account? Sign in"}
             </Button>
           </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
